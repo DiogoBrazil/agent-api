@@ -2,9 +2,6 @@
 
 Este projeto implementa um chatbot inteligente que utiliza LangChain para processar linguagem natural e interagir com um banco de dados PostgreSQL. O chatbot é capaz de entender perguntas em linguagem natural sobre produtos e retornar informações relevantes do banco de dados.
 
-## Autor
-[DiogoBrazil](https://github.com/DiogoBrazil)
-
 ## Tecnologias Utilizadas
 - Python 3.10
 - FastAPI
@@ -84,15 +81,5 @@ curl -X POST "http://localhost:8000/api/v1/chat/input/" \
 }
 ```
 
-## Estrutura de Banco de Dados
-O projeto utiliza um banco PostgreSQL com as seguintes tabelas principais:
-- products: Armazena informações dos produtos
-- product_categories: Categorias de produtos
-- orders: Pedidos realizados
-- customers: Informações de clientes
-
 ## Autor
 [DiogoBrazil](https://github.com/DiogoBrazil)
-
-## Repositório
-[agent-api](https://github.com/DiogoBrazil/agent-api)
