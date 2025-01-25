@@ -8,7 +8,8 @@ import asyncio
 products = {
     'total_products': None,
     'products': None,
-    'products_all': None
+    'products_all': None,
+    'products_by_description': None
 }
 
 class ProductTools():
@@ -37,6 +38,11 @@ class ProductTools():
             products['products'] = await self.product_repository.get_product_by_two_or_more_words(words)
         else:
             products['products'] = await self.product_repository.get_product_by_one_word(words)
+    
+    async def initialize_get_products_by_description(self, description: str):
+        """Inicializa os dados necessários para as tools"""
+        global products
+        products['products_by_description'] = await self.product_repository.get_product_by_description(description)
     
 
     @staticmethod
@@ -69,9 +75,22 @@ class ProductTools():
             return "Nenhum produto encontrado"
         return products['products']
     
+    @staticmethod
+    @tool
+    def get_products_by_description() -> str:
+        """
+           Busca informações sobre produtos no catálogo quando o usuario passar a descrição 
+           do produto.
+        """
+        global products
+        if products['products_by_description'] is None:
+            return "Nenhum produto encontrado"
+        return products['products_by_description']
+    
     def return_tools(self):
-        tools = [self.get_all_products, self.get_total_quantity_of_products, self.get_products_by_params]
+        tools = [self.get_products_by_description]
         return {
             'tools_json': [convert_to_openai_function(tool) for tool in tools],
             'tool_run': {tool.name: tool for tool in tools}
         }
+# self.get_all_products, self.get_total_quantity_of_products, self.get_products_by_params, 

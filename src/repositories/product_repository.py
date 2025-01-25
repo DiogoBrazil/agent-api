@@ -2,11 +2,13 @@ import asyncpg
 from typing import List, Dict
 from src.infra.database import get_database
 from src.config.settings import Settings
+import requests as req
 
 class ProductRepository:
     def __init__(self):
         self.db_connection = get_database()
         self.pool = None
+        self.settings = Settings()
     
     async def init_pool(self):
         if not self.pool:
@@ -75,4 +77,25 @@ class ProductRepository:
                 
         except Exception as e:
             print(f"Erro ao buscar todos os produtos: {str(e)}")
+            return None
+    
+    async def get_product_by_description(self, description: str) -> List:
+        
+        dados = {
+            "prompt": description
+        }
+
+        headers = {
+            'Content-Type': 'application/json',
+        }
+
+        print(f"Buscando produto por descrição: {description}")
+        print(f"URL: {self.settings.BASE_URL}produtos/prompt")
+
+        response = req.post(f"{self.settings.BASE_URL}produtos/prompt", headers=headers, json=dados)
+
+        if response.status_code == 200:
+             return response.json()
+        else:
+            print(f"Erro ao buscar produto por descrição: {response.text}")
             return None

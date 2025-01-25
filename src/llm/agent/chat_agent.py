@@ -59,11 +59,15 @@ class ChatAgent():
             
             if isinstance(response, AgentFinish):
                 return response
-            if response.tool == 'get_products_by_params':
-                products = await self.product_repository.get_all_products()
-                products = [product["name"] for product in products]
-                words = find_similar_words_to_get_products(user_input, products)
-                await self.initialize_get_products(words)
+            print(f'TOOL: {response.tool}')
+            # if response.tool == 'get_products_by_params':
+            #     products = await self.product_repository.get_all_products()
+            #     products = [product["name"] for product in products]
+            #     words = find_similar_words_to_get_products(user_input, products)
+            #     await self.initialize_get_products(words)
+                
+            if response.tool == 'get_products_by_description':
+                await getattr(self.tool_product, f'initialize_{response.tool}')(user_input)
             else:
                 await getattr(self.tool_product, f'initialize_{response.tool}')()
 
